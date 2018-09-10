@@ -1,0 +1,8 @@
+!dist/
+.idea/
+test/
+node_modules/
+webpack.config.js
+tsconfig.json
+tslint.json
+src
