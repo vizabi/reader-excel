@@ -1,6 +1,9 @@
-import * as parseDecimal from 'parse-decimal-number';
 import { read, utils } from 'xlsx';
+import { csvReaderObject } from 'vizabi-csv-reader';
 import { IReader } from './interfaces';
+
+declare const d3;
+declare const Vizabi;
 
 function getDsvFromJSON(json) {
   const columns = json[0];
@@ -10,7 +13,7 @@ function getDsvFromJSON(json) {
     const newRecord = {};
 
     for (let i = 0; i < columns.length; i++) {
-      newRecord[columns[i]] = record[i];
+      newRecord[columns[i]] = record[i] || '';
     }
 
     return newRecord;
@@ -33,6 +36,8 @@ export const getReaderObject = (fileReader: IReader) => ({
       ...[',.', '.,'].map(separator => this._createParseStrategy(separator)),
       numberPar => numberPar,
     ];
+    this.additionalTextReader = readerInfo.additionalTextReader;
+    this.additionalJsonReader = readerInfo.additionalJsonReader;
 
     Object.assign(this.ERRORS || {}, {
       WRONG_TIME_COLUMN_OR_UNITS: 'reader/error/wrongTimeUnitsOrColumn',
@@ -44,11 +49,7 @@ export const getReaderObject = (fileReader: IReader) => ({
     });
   },
 
-  async getAsset(asset) {
-    return new Promise((resolve, reject) => {
-      resolve();
-    });
-  },
+  getAsset: csvReaderObject.getAsset,
 
   getCached() {
     return cached;
@@ -76,56 +77,9 @@ export const getReaderObject = (fileReader: IReader) => ({
     });
   },
 
-  _createParseStrategy(separators) {
-    return value => {
-      const hasOnlyNumbersOrSeparators = !(new RegExp(`[^-\\d${separators}]`).test(value));
+  _createParseStrategy: csvReaderObject._createParseStrategy,
 
-      if (hasOnlyNumbersOrSeparators && value) {
-        const result = parseDecimal(value, separators);
+  _mapRows: csvReaderObject._mapRows,
 
-        if (!isFinite(result) || isNaN(result)) {
-          this._isParseSuccessful = false;
-        }
-
-        return result;
-      }
-
-      return value;
-    };
-  },
-
-  _mapRows(rows, query, parsers) {
-    const mapRow = this._getRowMapper(query, parsers);
-    this._failedParseStrategies = 0;
-    for (const parseStrategy of this._parseStrategies) {
-      this._parse = parseStrategy;
-      this._isParseSuccessful = true;
-
-      const result = [];
-      for (const row of rows) {
-        const parsed = mapRow(row);
-
-        if (!this._isParseSuccessful) {
-          this._failedParseStrategies++;
-          break;
-        }
-
-        result.push(parsed);
-      }
-
-      if (this._isParseSuccessful) {
-        if (this._failedParseStrategies === this._parseStrategies.length - 1) {
-          throw this.error(this.ERRORS.DIFFERENT_SEPARATORS);
-        }
-        return result;
-      }
-    }
-  },
-
-  _onLoadError(error) {
-    const { _basepath: path, _lastModified } = this;
-    delete cached[path + _lastModified];
-
-    this._super(error);
-  }
+  _onLoadError: csvReaderObject._onLoadError
 });
