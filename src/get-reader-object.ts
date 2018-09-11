@@ -30,6 +30,7 @@ export const getReaderObject = (fileReader: IReader) => ({
   init(readerInfo) {
     this._lastModified = readerInfo.lastModified || '';
     this._basePath = readerInfo.path;
+    this.sheet = readerInfo.sheet || 0;
     this.keySize = readerInfo.keySize || 1;
     this.assetsPath = readerInfo.assetsPath || '';
     this._parseStrategies = [
@@ -45,7 +46,8 @@ export const getReaderObject = (fileReader: IReader) => ({
       UNDEFINED_DELIMITER: 'reader/error/undefinedDelimiter',
       EMPTY_HEADERS: 'reader/error/emptyHeaders',
       DIFFERENT_SEPARATORS: 'reader/error/differentSeparators',
-      FILE_NOT_FOUND: 'reader/error/fileNotFoundOrPermissionsOrEmpty'
+      FILE_NOT_FOUND: 'reader/error/fileNotFoundOrPermissionsOrEmpty',
+      WRONG_SHEET: 'reader/error/wrongSheet'
     });
   },
 
@@ -56,17 +58,27 @@ export const getReaderObject = (fileReader: IReader) => ({
   },
 
   async load() {
-    const { _basepath: path, _lastModified } = this;
-    const cachedPromise = cached[path + _lastModified];
+    const cacheKey = this.basePathpat + this._lastModified;
+    const cachedPromise = cached[cacheKey];
 
-    return cachedPromise ? cachedPromise : cached[path + _lastModified] = new Promise((resolve, reject) => {
+    return cachedPromise ? cachedPromise : cached[cacheKey] = new Promise((resolve, reject) => {
       fileReader.readText(this._basePath, (err, content) => {
         if (err) {
           return reject(err);
         }
 
         const workbook = read(content, { type: 'binary' });
-        const wsName = workbook.SheetNames[0];
+        const getWorkSheetName = () => {
+          if (Number.isInteger(this.sheet) && this.sheet < workbook.SheetNames.length && this.sheet >= 0) {
+            return workbook.SheetNames[this.sheet];
+          } else if (workbook.Sheets[this.sheet]) {
+            return this.sheet;
+          } else {
+            throw this.error(this.ERRORS.WRONG_SHEET);
+          }
+        };
+
+        const wsName = getWorkSheetName();
         const worksheet = workbook.Sheets[wsName];
         const json = utils.sheet_to_json(worksheet, { header: 1 });
 

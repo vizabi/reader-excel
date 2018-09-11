@@ -1,8 +1,8 @@
 {
   "name": "vizabi-excel-reader",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "vizabi-excel-reader",
-  "main": "./lib/index.js",
+  "main": "./lib/index-backend.js",
   "scripts": {
     "build-backend": "tsc",
     "build-frontend": "npm run webpack",
@@ -15,7 +15,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "fetch-polyfill": "0.8.2",
-    "vizabi-csv-reader": "0.1.1",
+    "vizabi-csv-reader": "0.1.2",
     "xlsx": "0.13.5"
   },
   "devDependencies": {
