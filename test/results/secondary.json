@@ -1,0 +1,238 @@
+{
+  "columns": [
+    "geo",
+    "time",
+    "GDP",
+    "LEX",
+    "POP",
+    "world_region",
+    "category"
+  ],
+  "rows": [
+    {
+      "geo": "world",
+      "time": "1990",
+      "GDP": "8780.9",
+      "LEX": "65.76",
+      "POP": "5858793283",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1991",
+      "GDP": "8669.31",
+      "LEX": "65.93",
+      "POP": "5951704654",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1992",
+      "GDP": "8410.78",
+      "LEX": "66.08",
+      "POP": "6041808630",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1993",
+      "GDP": "8303.1",
+      "LEX": "66.14",
+      "POP": "6128869404",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1994",
+      "GDP": "8306.03",
+      "LEX": "66.27",
+      "POP": "6214708620",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1995",
+      "GDP": "8392.6",
+      "LEX": "66.44",
+      "POP": "6299799342",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1996",
+      "GDP": "8537.01",
+      "LEX": "66.7",
+      "POP": "6383624656",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1997",
+      "GDP": "8791.66",
+      "LEX": "66.97",
+      "POP": "6466176041",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1998",
+      "GDP": "8929.34",
+      "LEX": "67.22",
+      "POP": "6547860508",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "1999",
+      "GDP": "9118.68",
+      "LEX": "67.43",
+      "POP": "6628565361",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2000",
+      "GDP": "9294.51",
+      "LEX": "67.71",
+      "POP": "6708774944",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2001",
+      "GDP": "9433.26",
+      "LEX": "67.99",
+      "POP": "6788484451",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2002",
+      "GDP": "9532.73",
+      "LEX": "68.26",
+      "POP": "6867598685",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2003",
+      "GDP": "9668.13",
+      "LEX": "68.52",
+      "POP": "6946653578",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2004",
+      "GDP": "9898.26",
+      "LEX": "68.83",
+      "POP": "7026019325",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2005",
+      "GDP": "8819.28",
+      "LEX": "69.06",
+      "POP": "7105910415",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2006",
+      "GDP": "9173.85",
+      "LEX": "69.36",
+      "POP": "7186353153",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2007",
+      "GDP": "9530.87",
+      "LEX": "69.61",
+      "POP": "7267256372",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2008",
+      "GDP": "9616.73",
+      "LEX": "69.8",
+      "POP": "7348502078",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2009",
+      "GDP": "9421.27",
+      "LEX": "70.03",
+      "POP": "6817597375",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2010",
+      "GDP": "9759.93",
+      "LEX": "70.23",
+      "POP": "6895735900",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2011",
+      "GDP": "9975.47",
+      "LEX": "70.45",
+      "POP": "6973845863",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2012",
+      "GDP": "10149.75",
+      "LEX": "70.65",
+      "POP": "7051957949",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2013",
+      "GDP": "10423.39",
+      "LEX": "70.81",
+      "POP": "7129858227",
+      "world_region": "world",
+      "category": "global"
+    },
+    {
+      "geo": "world",
+      "time": "2014",
+      "GDP": "10720.8",
+      "LEX": "71",
+      "POP": "7207330525",
+      "world_region": "world",
+      "category": "global"
+    }
+  ]
+}
