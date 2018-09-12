@@ -9,30 +9,59 @@ global.Vizabi = require('vizabi');
 const expect = chai.expect;
 
 const readJson = (filePath, onFileRead) => {
-  if (!fs.existsSync(filePath)) {
-    return onFileRead('No such file: ' + filePath);
-  }
-
-  fs.readFile(filePath, 'utf-8', (err, content) => {
-    if (err) {
-      onFileRead(err);
-      return;
+  fs.stat(filePath, (fileErr, stat: any) => {
+    if (fileErr) {
+      return onFileRead(fileErr);
     }
 
-    try {
-      onFileRead(null, JSON.parse(content.toString()));
-    } catch (e) {
-      onFileRead(e);
+    if (stat.code === 'ENOENT') {
+      return onFileRead('No such file: ' + filePath);
     }
+
+    fs.readFile(filePath, 'utf-8', (readErr, content) => {
+      if (readErr) {
+        return onFileRead(readErr);
+      }
+
+      try {
+        onFileRead(null, JSON.parse(content.toString()));
+      } catch (e) {
+        onFileRead(e);
+      }
+    });
   });
 };
 
 describe('excel reader object', () => {
-  it('load data', async () => {
+  it('load data with default sheet', async () => {
     const expectedResult = require('./results/main.json');
     const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
     const excelReaderObject = new ExcelReader({
       path: path.resolve('test/fixtures/basic-2003.xls')
+    });
+    const result = await excelReaderObject.load();
+
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  it('load data with sheet as a number', async () => {
+    const expectedResult = require('./results/main.json');
+    const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+    const excelReaderObject = new ExcelReader({
+      path: path.resolve('test/fixtures/basic-2003.xls'),
+      sheet: 0
+    });
+    const result = await excelReaderObject.load();
+
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  it('load data with sheet as a string', async () => {
+    const expectedResult = require('./results/main.json');
+    const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+    const excelReaderObject = new ExcelReader({
+      path: path.resolve('test/fixtures/basic-2003.xls'),
+      sheet: 'basic'
     });
     const result = await excelReaderObject.load();
 
