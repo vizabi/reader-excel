@@ -22,7 +22,9 @@ function getDsvFromJSON(json) {
   return { columns, rows };
 }
 
-const cached = {};
+let cached = {};
+
+export const clearCache = () => cached = {};
 
 export const getReaderObject = (fileReader: IReader) => ({
   _name: 'excel',
