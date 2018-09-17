@@ -98,6 +98,18 @@ describe('excel reader object', () => {
     });
   }
 
+  it('load data with time in columns format', async () => {
+    const expectedResult = require('./results/timeright--education.json');
+    const CsvReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+    const csvReaderObject = new CsvReader({
+      path: path.resolve('test/fixtures/timeright--education.xlsx'),
+      timeInColumns: true
+    });
+    const result = await csvReaderObject.load();
+
+    expect(result).to.deep.equal(expectedResult);
+  });
+
   it('load assets', async () => {
     const expectedResult = require('./fixtures/world-50m.json');
     const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);

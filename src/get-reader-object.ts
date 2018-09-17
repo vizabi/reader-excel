@@ -27,14 +27,17 @@ let cached = {};
 export const clearCache = () => cached = {};
 
 export const getReaderObject = (fileReader: IReader) => ({
+  MISSED_INDICATOR_NAME: 'indicator',
   _name: 'excel',
 
   init(readerInfo) {
-    this._lastModified = readerInfo.lastModified || '';
-    this._basePath = readerInfo.path;
+    this.lastModified = readerInfo.lastModified || '';
+    this.path = readerInfo.path;
     this.sheet = readerInfo.sheet || 0;
     this.keySize = readerInfo.keySize || 1;
     this.assetsPath = readerInfo.assetsPath || '';
+    this.isTimeInColumns = readerInfo.timeInColumns || false;
+    this.timeKey = 'time';
     this._parseStrategies = [
       ...[',.', '.,'].map(separator => this._createParseStrategy(separator)),
       numberPar => numberPar,
@@ -49,6 +52,7 @@ export const getReaderObject = (fileReader: IReader) => ({
       EMPTY_HEADERS: 'reader/error/emptyHeaders',
       DIFFERENT_SEPARATORS: 'reader/error/differentSeparators',
       FILE_NOT_FOUND: 'reader/error/fileNotFoundOrPermissionsOrEmpty',
+      REPEATED_KEYS: 'reader/error/repeatedKeys',
       WRONG_SHEET: 'reader/error/wrongSheet'
     });
   },
@@ -59,12 +63,12 @@ export const getReaderObject = (fileReader: IReader) => ({
     return cached;
   },
 
-  async load() {
-    const cacheKey = this.basePathpat + this._lastModified;
+  async load(parsers) {
+    const cacheKey = this.path + this.lastModified;
     const cachedPromise = cached[cacheKey];
 
     return cachedPromise ? cachedPromise : cached[cacheKey] = new Promise((resolve, reject) => {
-      fileReader.readText(this._basePath, (err, content) => {
+      fileReader.readText(this.path, (err, content) => {
         if (err) {
           return reject(err);
         }
@@ -83,8 +87,8 @@ export const getReaderObject = (fileReader: IReader) => ({
         const wsName = getWorkSheetName();
         const worksheet = workbook.Sheets[wsName];
         const json = utils.sheet_to_json(worksheet, { header: 1 });
-
-        const result = getDsvFromJSON(json);
+        const transformer = this.isTimeInColumns ? csvReaderObject.timeInColumns.bind(this) : r => r;
+        const result = transformer(getDsvFromJSON(json), parsers);
 
         resolve(result);
       });

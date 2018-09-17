@@ -35,7 +35,7 @@ console.log(result);
 <script src="node_modules/vizabi-excel-reader/dist/vizabi-excel-reader.js"></script>
 <script>
   // ExcelReader global variable was imported by script above
-  Vizabi.Reader.extend("excel-reader", ExcelReader.csvReaderObject);
+  Vizabi.Reader.extend("excel-reader", ExcelReader.excelReaderObject);
   // use "excel-reader" as a Vizabi init parameter
   // .....
 </script>
@@ -51,7 +51,7 @@ global.d3 = require('d3');
 global.Vizabi = require('vizabi');
 
 const readJson = (filePath, onFileRead) => {
-  fs.stat(filePath, (fileErr, stat: any) => {
+  fs.stat(filePath, (fileErr, stat) => {
     if (fileErr) {
       return onFileRead(fileErr);
     }
@@ -87,6 +87,7 @@ console.log(result);
 ### Initial parameters
 
 * `path` - path to XLS file that would be processed
+* `timeInColumns` - a flag that indicates that Excel file contains data in `time-in-columns` format (false by default)
 * `sheet`- XLS sheet to open, can be a number or a string. In case of number it should be
            an order number of the expected sheet, in case of string it should be a name of 
            the expected sheet (0 is default)
