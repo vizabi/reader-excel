@@ -19,7 +19,7 @@ function getDsvFromJSON(json) {
     return newRecord;
   });
 
-  return { columns, rows };
+  return {columns, rows};
 }
 
 let cached = {};
@@ -31,8 +31,8 @@ export const getReaderObject = (fileReader: IReader) => ({
   _name: 'excel',
 
   init(readerInfo) {
-    this.lastModified = readerInfo.lastModified || '';
-    this.path = readerInfo.path;
+    this._lastModified = readerInfo.lastModified || '';
+    this._basepath = readerInfo.path;
     this.sheet = readerInfo.sheet || 0;
     this.keySize = readerInfo.keySize || 1;
     this.assetsPath = readerInfo.assetsPath || '';
@@ -64,16 +64,16 @@ export const getReaderObject = (fileReader: IReader) => ({
   },
 
   async load(parsers) {
-    const cacheKey = this._name + this.path + this.lastModified;
+    const cacheKey = this._name + this._basepath + this._lastModified;
     const cachedPromise = cached[cacheKey];
 
     return cachedPromise ? cachedPromise : cached[cacheKey] = new Promise((resolve, reject) => {
-      fileReader.readText(this.path, (err, content) => {
+      fileReader.readText(this._basepath, (err, content) => {
         if (err) {
           return reject(err);
         }
 
-        const workbook = read(content, { type: 'binary' });
+        const workbook = read(content, {type: 'binary'});
         const getWorkSheetName = () => {
           if (Number.isInteger(this.sheet) && this.sheet < workbook.SheetNames.length && this.sheet >= 0) {
             return workbook.SheetNames[this.sheet];
@@ -86,7 +86,7 @@ export const getReaderObject = (fileReader: IReader) => ({
 
         const wsName = getWorkSheetName();
         const worksheet = workbook.Sheets[wsName];
-        const json = utils.sheet_to_json(worksheet, { header: 1 });
+        const json = utils.sheet_to_json(worksheet, {header: 1});
         const transformer = this.isTimeInColumns ? csvReaderObject.timeInColumns.bind(this) : r => r;
         const result = transformer(getDsvFromJSON(json), parsers);
 
