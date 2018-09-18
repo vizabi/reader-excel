@@ -3,6 +3,7 @@
 !src/
 .idea/
 .vscode/
+coverage/
 test/
 node_modules/
 webpack.config.js
