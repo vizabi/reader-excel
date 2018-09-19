@@ -81,7 +81,7 @@ export const getReaderObject = (fileReader: IReader) => ({
   },
 
   async load(parsers) {
-    const cacheKey = `${this._name}${this._basepath}${this._lastModified}`;
+    const cacheKey = `${this._name}${this._basepath}${this._lastModified}#${this.sheet}`;
     const cachedPromise = cached[cacheKey];
 
     return cachedPromise ? cachedPromise : cached[cacheKey] = new Promise((resolve, reject) => {
