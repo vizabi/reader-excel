@@ -84,6 +84,25 @@ const result = await excelReaderObject.getAsset('asset file name');
 console.log(result);
 ```
 
+### Get worksheets names
+```javascript
+import * as path from 'path';
+import { excelReaderObject as excelReaderPlainObject } from 'vizabi-excel-reader';
+
+global.d3 = require('d3');
+global.Vizabi = require('vizabi');
+
+const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+const excelReaderObject = new ExcelReader({
+  path: path.resolve('path to XLS file'),
+  sheet: 'basic'
+});
+
+const result = await excelReaderObject.getWorksheets();
+
+console.log(result);
+```
+
 ### Initial parameters
 
 * `path` - path to XLS file that would be processed

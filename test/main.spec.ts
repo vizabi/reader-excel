@@ -98,6 +98,18 @@ describe('excel reader object', () => {
     });
   }
 
+  for (const file of files) {
+    it(`get worksheets names from ${file}`, async () => {
+      const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+      const excelReaderObject = new ExcelReader({
+        path: path.resolve(`test/fixtures/${file}`)
+      });
+      const result = await excelReaderObject.getWorksheets();
+
+      expect(result).to.deep.equal(['basic', 'secondary']);
+    });
+  }
+
   it('load data with time in columns format', async () => {
     const expectedResult = require('./results/timeright--education.json');
     const CsvReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
