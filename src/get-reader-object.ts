@@ -63,25 +63,8 @@ export const getReaderObject = (fileReader: IReader) => ({
     return cached;
   },
 
-  async getWorksheets() {
-    const cacheKey = `worksheets${this._name}${this._basepath}${this._lastModified}`;
-    const cachedPromise = cached[cacheKey];
-
-    return cachedPromise ? cachedPromise : cached[cacheKey] = new Promise((resolve, reject) => {
-      fileReader.readText(this._basepath, (err, content) => {
-        if (err) {
-          return reject(err);
-        }
-
-        const workbook = read(content, {type: 'binary'});
-
-        resolve(workbook.SheetNames);
-      });
-    });
-  },
-
   async load(parsers) {
-    const cacheKey = `${this._name}${this._basepath}${this._lastModified}`;
+    const cacheKey = this._name + this._basepath + this._lastModified;
     const cachedPromise = cached[cacheKey];
 
     return cachedPromise ? cachedPromise : cached[cacheKey] = new Promise((resolve, reject) => {
