@@ -112,6 +112,8 @@ console.log(result);
            the expected sheet (0 is default)
 * `lastModified` - last modification date (optional)
 * `keySize` - key size (1 by default)
+* `hasNameColumn` - an extra column that contains country name (should not be processed, optional, false by default)
+* `nameColumnIndex` - index of `nameColumn` (default value is 0)
 * `assetsPath` - path to assets JSON file (optional, must be ended with '/')
 * `additionalTextReader` - function that should replace tenured text reading function 
                            (optional, see examples above, could be useful on frontend or testing) 

@@ -5,10 +5,9 @@ import { IReader } from './interfaces';
 declare const d3;
 declare const Vizabi;
 
-function getDsvFromJSON(json) {
+function getDsvFromJSON(json, context) {
   const columns = json[0];
   const src = json.slice(1);
-
   const rows = src.map(record => {
     const newRecord = {};
 
@@ -18,6 +17,10 @@ function getDsvFromJSON(json) {
 
     return newRecord;
   });
+
+  if (context.hasNameColumn) {
+    columns.splice(context.keySize + 1, 0, columns.splice(context.nameColumnIndex, 1)[0]);
+  }
 
   return {columns, rows};
 }
@@ -35,6 +38,8 @@ export const getReaderObject = (fileReader: IReader) => ({
     this._basepath = readerInfo.path;
     this.sheet = readerInfo.sheet || 0;
     this.keySize = readerInfo.keySize || 1;
+    this.hasNameColumn = readerInfo.hasNameColumn || false;
+    this.nameColumnIndex = readerInfo.nameColumnIndex || 0;
     this.assetsPath = readerInfo.assetsPath || '';
     this.isTimeInColumns = readerInfo.timeInColumns || false;
     this.timeKey = 'time';
@@ -105,7 +110,7 @@ export const getReaderObject = (fileReader: IReader) => ({
         const worksheet = workbook.Sheets[wsName];
         const json = utils.sheet_to_json(worksheet, {header: 1});
         const transformer = this.isTimeInColumns ? csvReaderObject.timeInColumns.bind(this) : r => r;
-        const result = transformer(getDsvFromJSON(json), parsers);
+        const result = transformer(getDsvFromJSON(json, this), parsers);
 
         resolve(result);
       });
