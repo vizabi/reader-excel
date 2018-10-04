@@ -1,6 +1,6 @@
 {
   "name": "vizabi-excel-reader",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "vizabi-excel-reader",
   "main": "./lib/index-backend.js",
   "scripts": {
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "fetch-polyfill": "0.8.2",
-    "vizabi-csv-reader": "0.3.0",
+    "vizabi-csv-reader": "0.4.0",
     "xlsx": "0.13.5"
   },
   "devDependencies": {
