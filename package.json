@@ -1,8 +1,11 @@
 {
-  "name": "vizabi-excel-reader",
-  "version": "0.5.0",
-  "description": "vizabi-excel-reader",
+  "name": "@vizabi/reader-excel",
+  "version": "1.0.0",
+  "description": "Vizabi reader for a Excel files",
   "main": "./lib/index-backend.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build-backend": "tsc",
     "build-frontend": "npm run webpack",
@@ -21,7 +24,21 @@
     "version": "npm run changelog && git add CHANGELOG.md",
     "postversion": "git push origin master && git push --tags && npm run github-release"
   },
-  "author": "Vyacheslav Chub<vyacheslav.chub@valor-software.com>",
+  "author": {
+    "name": "Gapminder Foundation",
+    "url": "https://www.gapminder.org",
+    "email": "info@gapminder.org"
+  },
+  "contributors": [
+    {
+      "name": "Vyacheslav Chub",
+      "url": "https://github.com/buchslava"
+    },
+    {
+      "name": "Dima Basov",
+      "url": "https://github.com/dab2000"
+    }
+  ],
   "license": "GPL-3.0",
   "nyc": {
     "include": [
