@@ -112,12 +112,24 @@ describe('excel reader object', () => {
 
   it('load data with time in columns format', async () => {
     const expectedResult = require('./results/timeright--education.json');
-    const CsvReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
-    const csvReaderObject = new CsvReader({
+    const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+    const excelReaderObject = new ExcelReader({
       path: path.resolve('test/fixtures/timeright--education.xlsx'),
       timeInColumns: true
     });
-    const result = await csvReaderObject.load();
+    const result = await excelReaderObject.load();
+
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  it('load data with name column', async () => {
+    const expectedResult = require('./results/name-column.json');
+    const ExcelReader = global.Vizabi.Reader.extend(excelReaderPlainObject);
+    const excelReaderObject = new ExcelReader({
+      path: path.resolve('test/fixtures/name-column.xls'),
+      hasNameColumn: true
+    });
+    const result = await excelReaderObject.load();
 
     expect(result).to.deep.equal(expectedResult);
   });

@@ -1,63 +1,26 @@
 import { read, utils } from 'xlsx';
-import { csvReaderObject } from 'vizabi-csv-reader';
 import { IReader } from './interfaces';
 
-declare const d3;
-declare const Vizabi;
-
-function getDsvFromJSON(json) {
-  const columns = json[0];
-  const src = json.slice(1);
-
-  const rows = src.map(record => {
-    const newRecord = {};
-
-    for (let i = 0; i < columns.length; i++) {
-      newRecord[columns[i]] = record[i] || '';
-    }
-
-    return newRecord;
-  });
-
-  return {columns, rows};
-}
+const ERRORS = {
+  WRONG_SHEET: 'reader/error/wrongSheet'
+};
 
 let cached = {};
 
 export const clearCache = () => cached = {};
 
-export const getReaderObject = (fileReader: IReader) => ({
-  MISSED_INDICATOR_NAME: 'indicator',
+export const getReaderObject = (fileReader: IReader) => (csvReader) => ({
   _name: 'excel',
 
   init(readerInfo) {
     this._lastModified = readerInfo.lastModified || '';
     this._basepath = readerInfo.path;
     this.sheet = readerInfo.sheet || 0;
-    this.keySize = readerInfo.keySize || 1;
-    this.assetsPath = readerInfo.assetsPath || '';
-    this.isTimeInColumns = readerInfo.timeInColumns || false;
-    this.timeKey = 'time';
-    this._parseStrategies = [
-      ...[',.', '.,'].map(separator => this._createParseStrategy(separator)),
-      numberPar => numberPar,
-    ];
-    this.additionalTextReader = readerInfo.additionalTextReader;
-    this.additionalJsonReader = readerInfo.additionalJsonReader;
 
-    Object.assign(this.ERRORS || {}, {
-      WRONG_TIME_COLUMN_OR_UNITS: 'reader/error/wrongTimeUnitsOrColumn',
-      NOT_ENOUGH_ROWS_IN_FILE: 'reader/error/notEnoughRows',
-      UNDEFINED_DELIMITER: 'reader/error/undefinedDelimiter',
-      EMPTY_HEADERS: 'reader/error/emptyHeaders',
-      DIFFERENT_SEPARATORS: 'reader/error/differentSeparators',
-      FILE_NOT_FOUND: 'reader/error/fileNotFoundOrPermissionsOrEmpty',
-      REPEATED_KEYS: 'reader/error/repeatedKeys',
-      WRONG_SHEET: 'reader/error/wrongSheet'
-    });
+    Object.assign(this, csvReader(Object.assign({
+      externalTextReader: this.xslToCsvReader.bind(this)
+    }, readerInfo)))
   },
-
-  getAsset: csvReaderObject.getAsset,
 
   getCached() {
     return cached;
@@ -80,7 +43,7 @@ export const getReaderObject = (fileReader: IReader) => ({
     });
   },
 
-  async load(parsers) {
+  async xslToCsvReader() {
     const cacheKey = `${this._name}${this._basepath}${this._lastModified}#${this.sheet}`;
     const cachedPromise = cached[cacheKey];
 
@@ -97,24 +60,16 @@ export const getReaderObject = (fileReader: IReader) => ({
           } else if (workbook.Sheets[this.sheet]) {
             return this.sheet;
           } else {
-            throw this.error(this.ERRORS.WRONG_SHEET);
+            throw this.error(ERRORS.WRONG_SHEET);
           }
         };
 
         const wsName = getWorkSheetName();
         const worksheet = workbook.Sheets[wsName];
-        const json = utils.sheet_to_json(worksheet, {header: 1});
-        const transformer = this.isTimeInColumns ? csvReaderObject.timeInColumns.bind(this) : r => r;
-        const result = transformer(getDsvFromJSON(json), parsers);
 
-        resolve(result);
+        resolve(utils.sheet_to_csv(worksheet));
       });
     });
   },
 
-  _createParseStrategy: csvReaderObject._createParseStrategy,
-
-  _mapRows: csvReaderObject._mapRows,
-
-  _onLoadError: csvReaderObject._onLoadError
 });

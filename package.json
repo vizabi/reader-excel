@@ -1,8 +1,11 @@
 {
-  "name": "vizabi-excel-reader",
-  "version": "0.3.1",
-  "description": "vizabi-excel-reader",
+  "name": "@vizabi/reader-excel",
+  "version": "1.0.0",
+  "description": "Vizabi reader for a Excel files",
   "main": "./lib/index-backend.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build-backend": "tsc",
     "build-frontend": "npm run webpack",
@@ -21,7 +24,21 @@
     "version": "npm run changelog && git add CHANGELOG.md",
     "postversion": "git push origin master && git push --tags && npm run github-release"
   },
-  "author": "Vyacheslav Chub<vyacheslav.chub@valor-software.com>",
+  "author": {
+    "name": "Gapminder Foundation",
+    "url": "https://www.gapminder.org",
+    "email": "info@gapminder.org"
+  },
+  "contributors": [
+    {
+      "name": "Vyacheslav Chub",
+      "url": "https://github.com/buchslava"
+    },
+    {
+      "name": "Dima Basov",
+      "url": "https://github.com/dab2000"
+    }
+  ],
   "license": "GPL-3.0",
   "nyc": {
     "include": [
@@ -44,12 +61,12 @@
   },
   "dependencies": {
     "fetch-polyfill": "0.8.2",
-    "vizabi-csv-reader": "0.2.1",
     "xlsx": "0.13.5"
   },
   "devDependencies": {
     "@types/mocha": "5.2.5",
     "@types/node": "9.4.6",
+    "@vizabi/core": "1.18.0",
     "chai": "4.1.2",
     "clean-webpack-plugin": "0.1.19",
     "codecov": "3.1.0",
@@ -57,7 +74,6 @@
     "conventional-changelog": "1.1.3",
     "conventional-changelog-cli": "1.3.1",
     "conventional-github-releaser": "1.1.9",
-    "d3": "5.7.0",
     "mocha": "5.2.0",
     "nyc": "13.0.1",
     "source-map-loader": "0.2.4",
@@ -65,7 +81,6 @@
     "ts-node": "5.0.0",
     "tslint": "5.9.1",
     "typescript": "2.7.2",
-    "vizabi": "0.33.10",
     "webpack": "4.8.1",
     "webpack-cli": "2.1.3"
   }
